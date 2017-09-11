@@ -5,6 +5,8 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const app = express();
 const config = require('./config');
+const api = require ('./routes/api');
+
 const db = config.DB[process.env.NODE_ENV] || process.env.DB;
 const PORT = config.PORT[process.env.NODE_ENV] || process.env.PORT;
 
@@ -21,7 +23,7 @@ app.get('/', function (req, res) {
   res.status(200).send('All good!');
 });
 
-app.use('/api', function () {});
+app.use('/api', api);
 
 app.listen(PORT, function () {
   console.log(`listening on port ${PORT}`);
