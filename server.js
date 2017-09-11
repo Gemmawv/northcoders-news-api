@@ -40,9 +40,9 @@ app.use(function (err, req, res, next) {
 
 app.use(function (err, req, res, next) {
   if (err.name === 'CastError') {
-      return res.status(422).json({message: 'Incorrect/Invalid ID'});
+    return res.status(422).json({ message: 'Incorrect/Invalid ID' });
   }
-  res.status(500).json({message: 'Server error'});
+  res.status(500).json({ message: 'Server error' });
 });
 
 module.exports = app;
