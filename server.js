@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 if (!process.env.NODE_ENV) process.env.NODE_ENV = 'dev';
 
 const express = require('express');
@@ -34,6 +36,13 @@ app.use(function (err, req, res, next) {
     res.status(err.status).json({ message: err.message });
   }
   next(err);
+});
+
+app.use(function (err, req, res, next) {
+  if (err.name === 'CastError') {
+      return res.status(422).json({message: 'Incorrect/Invalid ID'});
+  }
+  res.status(500).json({message: 'Server error'});
 });
 
 module.exports = app;
