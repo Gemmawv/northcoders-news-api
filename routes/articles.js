@@ -41,4 +41,18 @@ router.post('/:article_id/comments', function (req, res, next) {
     });
 });
 
+router.put('/:article_id', function (req, res, next) {
+    const _id = req.params.article_id;
+    models.Articles.findOne({ _id })
+        .then((article) => {
+            if (req.query.vote === 'up') article.votes += 1;
+            if (req.query.vote === 'down') article.votes -= 1;
+            return article.save();
+        })
+        .then((article) => {
+            res.status(201).json({ article });
+        })
+        .catch(next);
+});
+
 module.exports = router;
