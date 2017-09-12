@@ -106,7 +106,44 @@ describe('API', function () {
     });
     it('should respond with status code 422 if the article id is invalid', function (done) {
       request(server)
-        .get('/api/articles/fakeid/comments')
+        .get('/api/articles/zebra/comments')
+        .end((err, res) => {
+          if (err) return console.log(err);
+          expect(res.status).to.equal(422);
+          expect(res.body.message).to.equal('Incorrect/Invalid ID');
+          done();
+        });
+    });
+  });
+
+  describe('POST /api/articles/:article_id/comments', function () {
+    it('should add a new comment to an article', function (done) {
+      let ArticleId = usefulIds.article_id;
+      request(server)
+        .post(`/api/articles/${ArticleId}/comments`)
+        .send({ body: 'Comment!' })
+        .end((err, res) => {
+          if (err) return console.log(err);
+          expect(res.status).to.equal(201);
+          const commentId = res.body.comment._id;
+          expect(mongoose.Types.ObjectId.isValid(commentId)).to.equal(true);
+          done();
+        });
+    });
+    it('should respond with status code 404 if the article does not exist', function (done) {
+      request(server)
+        .post('/api/articles/594ce833a5c1100b7c3886d0/comments')
+        .send({ body: 'Comment!' })
+        .end((err, res) => {
+          if (err) return console.log(err);
+          expect(res.status).to.equal(404);
+          expect(res.body.message).to.equal('Cannot find article 594ce833a5c1100b7c3886d0');
+          done();
+        });
+    });
+    it('should respond with status code 422 if the article id is invalid', function (done) {
+      request(server)
+        .post('/api/articles/banana/comments')
         .end((err, res) => {
           if (err) return console.log(err);
           expect(res.status).to.equal(422);
