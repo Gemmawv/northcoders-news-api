@@ -188,14 +188,14 @@ describe('API', function () {
           done();
         });
     });
-    it('should return an error if the article id is invalid', function (done) {
+    it('should respond with status code 422 if the article id is invalid', function (done) {
       let articleId = 'mango';
       request(server)
         .put(`/api/articles/${articleId}?vote=down`)
         .end((err, res) => {
           if (err) return console.log(err);
           expect(res.status).to.equal(422);
-          expect(res.body.message).to.equal('Incorrect/Invalid ID');          
+          expect(res.body.message).to.equal('Incorrect/Invalid ID');
           done();
         });
     });
@@ -235,14 +235,39 @@ describe('API', function () {
           done();
         });
     });
-    it('should return an error if the comment id is invalid', function (done) {
+    it('should respond with status code 422 if the comment id is invalid', function (done) {
       let commentId = 'bananas';
       request(server)
         .put(`/api/comments/${commentId}?vote=down`)
         .end((err, res) => {
           if (err) return console.log(err);
           expect(res.status).to.equal(422);
-          expect(res.body.message).to.equal('Incorrect/Invalid ID');          
+          expect(res.body.message).to.equal('Incorrect/Invalid ID');
+          done();
+        });
+    });
+  });
+
+  describe.only('DELETE /api/comments/:comment_id', function () {
+    it('should delete a comment', function (done) {
+      let commentId = '594ce834a5c2500b7c386702';
+      request(server)
+        .delete(`/api/comments/${commentId}`)
+        .end((err, res) => {
+          if (err) return console.log(err);
+          expect(res.status).to.equal(200);
+          expect(res.body).to.eql({ "message": "Comment has been deleted." });
+          done();
+        });
+    });
+    it('should respond with status code 422 if the comment id is invalid', function (done) {
+      let commentId = 'pineapple';
+      request(server)
+        .delete(`/api/comments/${commentId}`)
+        .end((err, res) => {
+          if (err) return console.log(err);
+          expect(res.status).to.equal(422);
+          expect(res.body).to.eql({ "message": "Incorrect/Invalid ID" });
           done();
         });
     });
