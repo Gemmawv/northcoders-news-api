@@ -248,7 +248,7 @@ describe('API', function () {
     });
   });
 
-  describe.only('DELETE /api/comments/:comment_id', function () {
+  describe('DELETE /api/comments/:comment_id', function () {
     it('should delete a comment', function (done) {
       let commentId = '594ce834a5c2500b7c386702';
       request(server)
@@ -272,5 +272,30 @@ describe('API', function () {
         });
     });
   });
+
+  describe('GET /api/users/:username', function () {
+    it('should return data for the specified user', function (done) {
+      let singleUser = usefulIds.username;
+      request(server)
+        .get(`/api/users/${singleUser}`)
+        .end((err, res) => {
+          if (err) return console.log(err);
+          expect(res.status).to.equal(200);
+          expect(res.body.user.length).to.equal(1);
+          done();
+        });
+    });
+      it('should respond with status code 404 if the user does not exist', function (done) {
+      let singleUser = 'coco_pops';
+      request(server)
+        .get(`/api/users/${singleUser}`)
+        .end((err, res) => {
+          if (err) return console.log(err);
+          expect(res.status).to.equal(404);
+          expect(res.body).to.eql({message: 'User not found'});
+          done();
+        });
+    });
+  }); 
 
 });
