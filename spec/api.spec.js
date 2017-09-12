@@ -154,7 +154,7 @@ describe('API', function () {
     });
   });
 
-  describe.only('PUT /api/articles/:article_id', function () {
+  describe('PUT /api/articles/:article_id', function () {
     it('should increment the votes for an article by one', function (done) {
       let articleId = usefulIds.article_id;
       request(server)
@@ -195,6 +195,54 @@ describe('API', function () {
         .end((err, res) => {
           if (err) return console.log(err);
           expect(res.status).to.equal(422);
+          expect(res.body.message).to.equal('Incorrect/Invalid ID');          
+          done();
+        });
+    });
+  });
+
+  describe('PUT /api/comments/:comment_id', function () {
+    it('should increment the votes of a comment by one', function (done) {
+      let commentId = usefulIds.comment_id;
+      request(server)
+        .put(`/api/comments/${commentId}?vote=up`)
+        .end((err, res) => {
+          if (err) return console.log(err);
+          expect(res.status).to.equal(201);
+          expect(res.body.comment.votes).to.equal(1);
+          done();
+        });
+    });
+    it('should decrement the votes of a comment by one', function (done) {
+      let commentId = usefulIds.comment_id;
+      request(server)
+        .put(`/api/comments/${commentId}?vote=down`)
+        .end((err, res) => {
+          if (err) return console.log(err);
+          expect(res.status).to.equal(201);
+          expect(res.body.comment.votes).to.equal(-1);
+          done();
+        });
+    });
+    it('should respond with status code 404 if the comment does not exist', function (done) {
+      let commentId = '11b5a7fdb2017d0dfa0e80e3';
+      request(server)
+        .put(`/api/comments/${commentId}?vote=up`)
+        .end((err, res) => {
+          if (err) return console.log(err);
+          expect(res.status).to.equal(404);
+          expect(res.body.message).to.equal('Cannot find comment 11b5a7fdb2017d0dfa0e80e3');
+          done();
+        });
+    });
+    it('should return an error if the comment id is invalid', function (done) {
+      let commentId = 'bananas';
+      request(server)
+        .put(`/api/comments/${commentId}?vote=down`)
+        .end((err, res) => {
+          if (err) return console.log(err);
+          expect(res.status).to.equal(422);
+          expect(res.body.message).to.equal('Incorrect/Invalid ID');          
           done();
         });
     });
