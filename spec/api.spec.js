@@ -9,6 +9,7 @@ mongoose.Promise = global.Promise;
 const db = config.DB[process.env.NODE_ENV] || process.env.DB;
 
 describe('API', function () {
+  this.timeout(5000);
   let usefulIds;
   beforeEach((done) => {
     mongoose.connection.dropDatabase()
@@ -33,7 +34,7 @@ describe('API', function () {
     });
   });
 
-  describe('GET /topics', function () {
+  describe('GET /api/topics', function () {
     it('responds with all topics', function (done) {
       request(server)
         .get('/api/topics')
@@ -69,7 +70,7 @@ describe('API', function () {
     });
   });
 
-  describe('GET /articles', function () {
+  describe('GET /api/articles', function () {
     it('responds with all articles', function (done) {
       request(server)
         .get('/api/articles')
@@ -148,6 +149,41 @@ describe('API', function () {
           if (err) return console.log(err);
           expect(res.status).to.equal(422);
           expect(res.body.message).to.equal('Incorrect/Invalid ID');
+          done();
+        });
+    });
+  });
+
+  describe('PUT /api/articles/:article_id', function () {
+    it('should increment the votes for an article by one', function (done) {
+      let articleId = usefulIds.article_id;
+      request(server)
+        .put(`/api/articles/${articleId}?vote=up`)
+        .end((err, res) => {
+          if (err) return console.log(err);
+          expect(res.status).to.equal(201);
+          expect(res.body.article.votes).to.equal(1);
+          done();
+        });
+    });
+    it('should decrement the votes for an article by one', function (done) {
+      let articleId = usefulIds.article_id;
+      request(server)
+        .put(`/api/articles/${articleId}?vote=down`)
+        .end((err, res) => {
+          if (err) return console.log(err);
+          expect(res.status).to.equal(201);
+          expect(res.body.article.votes).to.equal(-1);
+          done();
+        });
+    });
+    it('should return an error if the article id is invalid', function (done) {
+      let articleId = 'mango';
+      request(server)
+        .put(`/api/articles/${articleId}?vote=down`)
+        .end((err, res) => {
+          if (err) return console.log(err);
+          expect(res.status).to.equal(422);
           done();
         });
     });
