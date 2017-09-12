@@ -22,4 +22,20 @@ router.put('/:comment_id', function (req, res, next) {
         .catch(next);
 });
 
+router.delete('/:comment_id', function (req, res, next) {
+    const id = req.params.comment_id;
+    models.Comments.findOneAndRemove({ belongs_to: id }, (err, comment) => {
+        if (err) return next(err);
+        if (comment === null) {
+            const error = new Error(`Cannot find comment ${id}`);
+            error.status = 404;
+            return next(error);
+        }
+    })
+        .then(() => {
+            res.status(200).json({ message: 'Comment has been deleted.' });
+        })
+        .catch(next);
+});
+
 module.exports = router;
