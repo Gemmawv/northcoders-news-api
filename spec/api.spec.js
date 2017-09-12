@@ -154,7 +154,7 @@ describe('API', function () {
     });
   });
 
-  describe('PUT /api/articles/:article_id', function () {
+  describe.only('PUT /api/articles/:article_id', function () {
     it('should increment the votes for an article by one', function (done) {
       let articleId = usefulIds.article_id;
       request(server)
@@ -174,6 +174,17 @@ describe('API', function () {
           if (err) return console.log(err);
           expect(res.status).to.equal(201);
           expect(res.body.article.votes).to.equal(-1);
+          done();
+        });
+    });
+    it('should respond with status code 404 if the article does not exist', function (done) {
+      let articleId = '594ce833a5c1100b7c3886d0';
+      request(server)
+        .put(`/api/articles/${articleId}?vote=up`)
+        .end((err, res) => {
+          if (err) return console.log(err);
+          expect(res.status).to.equal(404);
+          expect(res.body.message).to.equal('Cannot find article 594ce833a5c1100b7c3886d0');
           done();
         });
     });

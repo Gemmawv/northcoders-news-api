@@ -43,7 +43,14 @@ router.post('/:article_id/comments', function (req, res, next) {
 
 router.put('/:article_id', function (req, res, next) {
     const _id = req.params.article_id;
-    models.Articles.findOne({ _id })
+    models.Articles.findOne({ _id }, (err, article) => {
+        if (err) return next(err);
+        if (article === null) {
+            const error = new Error(`Cannot find article ${req.params.article_id}`);
+            error.status = 404;
+            return next(error);
+        }
+    })
         .then((article) => {
             if (req.query.vote === 'up') article.votes += 1;
             if (req.query.vote === 'down') article.votes -= 1;
