@@ -256,7 +256,7 @@ describe('API', function () {
         .end((err, res) => {
           if (err) return console.log(err);
           expect(res.status).to.equal(200);
-          expect(res.body).to.eql({ "message": "Comment has been deleted." });
+          expect(res.body.message).to.equal('Comment has been deleted.');
           done();
         });
     });
@@ -267,7 +267,7 @@ describe('API', function () {
         .end((err, res) => {
           if (err) return console.log(err);
           expect(res.status).to.equal(422);
-          expect(res.body).to.eql({ "message": "Incorrect/Invalid ID" });
+          expect(res.body.message).to.equal('Incorrect/Invalid ID');
           done();
         });
     });
@@ -292,7 +292,7 @@ describe('API', function () {
         .end((err, res) => {
           if (err) return console.log(err);
           expect(res.status).to.equal(404);
-          expect(res.body).to.eql({message: 'User not found'});
+          expect(res.body.message).to.equal('User not found');
           done();
         });
     });
