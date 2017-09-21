@@ -128,6 +128,7 @@ describe('API', function () {
           expect(res.status).to.equal(201);
           const commentId = res.body.comment._id;
           expect(mongoose.Types.ObjectId.isValid(commentId)).to.equal(true);
+          expect(res.body.comment.body).to.equal('Comment!');
           done();
         });
     });
@@ -250,13 +251,24 @@ describe('API', function () {
 
   describe('DELETE /api/comments/:comment_id', function () {
     it('should delete a comment', function (done) {
-      let commentId = '594ce834a5c2500b7c386702';
+      let commentId = usefulIds.comment_id;
       request(server)
         .delete(`/api/comments/${commentId}`)
         .end((err, res) => {
           if (err) return console.log(err);
           expect(res.status).to.equal(200);
           expect(res.body.message).to.equal('Comment has been deleted.');
+          done();
+        });
+    });
+    it('should respond with status code 404 if the comment does not exist', function (done) {
+      let commentId = '11b5a7fdb2017d0dfa0e80e3';
+      request(server)
+        .delete(`/api/comments/${commentId}`)
+        .end((err, res) => {
+          if (err) return console.log(err);
+          expect(res.status).to.equal(404);
+          expect(res.body.message).to.equal('Cannot find comment 11b5a7fdb2017d0dfa0e80e3');
           done();
         });
     });
@@ -285,7 +297,7 @@ describe('API', function () {
           done();
         });
     });
-      it('should respond with status code 404 if the user does not exist', function (done) {
+    it('should respond with status code 404 if the user does not exist', function (done) {
       let singleUser = 'coco_pops';
       request(server)
         .get(`/api/users/${singleUser}`)
@@ -296,6 +308,6 @@ describe('API', function () {
           done();
         });
     });
-  }); 
+  });
 
 });
