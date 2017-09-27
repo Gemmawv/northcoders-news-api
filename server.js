@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const config = require('./config');
 const api = require('./routes/api');
+const cors = require ('cors');
 
 const db = config.DB[process.env.NODE_ENV] || process.env.DB;
 const PORT = config.PORT[process.env.NODE_ENV] || process.env.PORT;
@@ -19,6 +20,8 @@ mongoose.connect(db, { useMongoClient: true }, function (err) {
     console.log(`error connecting to the Database ${err}`);
   }
 });
+
+app.use(cors());
 
 app.use(bodyParser.json());
 app.get('/', function (req, res) {
