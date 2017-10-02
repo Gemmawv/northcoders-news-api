@@ -83,6 +83,40 @@ describe('API', function () {
     });
   });
 
+  describe('GET /api/articles/:article_id', function () {
+    it('responds with the requested article', function (done) {
+      let ArticleId = usefulIds.article_id;
+      request(server)
+        .get(`/api/articles/${ArticleId}`)
+        .end((err, res) => {
+          if (err) return console.log(err);
+          expect(res.status).to.equal(200);
+          expect(res.body.article.title).to.equal('Cats are great');
+          done();
+        });
+    });
+    it('should respond with status code 404 if the article does not exist', function (done) {
+      request(server)
+        .get('/api/articles/987cf12ab75d862c4fbffa07')
+        .end((err, res) => {
+          if (err) return console.log(err);
+          expect(res.status).to.equal(404);
+          expect(res.body.message).to.equal('Article not found');
+          done();
+        });
+    });
+    it('should respond with status code 422 if the article id is invalid', function (done) {
+      request(server)
+        .get('/api/articles/llama')
+        .end((err, res) => {
+          if (err) return console.log(err);
+          expect(res.status).to.equal(422);
+          expect(res.body.message).to.equal('Incorrect/Invalid ID');
+          done();
+        });
+    });
+  });
+
   describe('GET /api/articles/:article_id/comments', function () {
     it('should return all of the comments that match the requested article', function (done) {
       let ArticleId = usefulIds.article_id;
