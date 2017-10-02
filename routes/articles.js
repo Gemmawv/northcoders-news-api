@@ -9,6 +9,18 @@ router.get('/', function (req, res, next) {
         .catch(next);
 });
 
+router.get('/:article_id', function (req, res, next) {
+    const slug = req.params.article_id;
+    models.Articles.findById(slug)
+        .then((article) => {
+            if (article === null) {
+                return next({ status: 404, message: 'Article not found' });
+            }
+            res.status(200).json({ article });
+        })
+        .catch(next);
+});
+
 router.get('/:article_id/comments', function (req, res, next) {
     const slug = req.params.article_id;
     models.Comments.find({ belongs_to: slug })
