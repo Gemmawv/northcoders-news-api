@@ -4,6 +4,18 @@ const models = require('../models/models');
 router.get('/', function (req, res, next) {
     models.Articles.find()
         .then((articles) => {
+            return Promise.all([articles, ...articles.map((article) => {
+                return models.Users.findOne({ username: article.created_by });
+            })]);
+        })
+        .then(([articles, ...users]) => {
+            return articles.map((article, i) => {
+                return Object.assign({}, article.toObject(), {
+                    avatar_url: users[i].avatar_url
+                });
+            });
+        })
+        .then((articles) => {
             return res.status(200).json({ articles });
         })
         .catch(next);
