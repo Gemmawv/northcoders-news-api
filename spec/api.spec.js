@@ -129,16 +129,6 @@ describe('API', function () {
           done();
         });
     });
-    it('should respond with status code 404 if the article does not exist', function (done) {
-      request(server)
-        .get('/api/articles/123cf45ab75d862c4fbffa09/comments')
-        .end((err, res) => {
-          if (err) return console.log(err);
-          expect(res.status).to.equal(404);
-          expect(res.body.message).to.equal('Article not found');
-          done();
-        });
-    });
     it('should respond with status code 422 if the article id is invalid', function (done) {
       request(server)
         .get('/api/articles/zebra/comments')

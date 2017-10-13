@@ -47,9 +47,6 @@ router.get('/:article_id/comments', function (req, res, next) {
   const articleId = req.params.article_id;
   models.Comments.find({ belongs_to: articleId })
     .then((commentsForArticles) => {
-      if (commentsForArticles.length < 1) {
-        return next({ status: 404, message: 'Article not found' });
-      }
       return Promise.all([commentsForArticles, ...commentsForArticles.map((comment) => {
         return models.Users.findOne({ username: comment.created_by });
       })]);
