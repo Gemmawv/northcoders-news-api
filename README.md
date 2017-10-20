@@ -4,20 +4,21 @@ This API has been built using Node.js, Express.js, MongoDB and Mongoose.
 
 This repo contains all the back-end code for this project. The code for the front-end can be viewed here: https://github.com/Gemmawv/northcoders-news
 
+
 # Installation
 
 1. Make sure you have node installed.
 ``` javascript 
 node -v
 ```
-This command will tell you the version of node you have, if you have it installed already. If you do not have node installed, follow the installation instructions found here https://nodejs.org/en/download/package-manager/.
+This command will tell you the version of node you have, if you have it installed already. If you do not have node installed, follow the installation instructions found here: https://nodejs.org/en/download/package-manager/.
 
 
 2. Make sure you have npm installed
 ``` javascript 
 npm -v
 ```
-This command will tell you the version of npm you have, if you have it installed already. If you do not have npm installed, first make sure you have node installed (as described above), then run
+This command will tell you the version of npm you have, if you have it installed already. If you do not have npm installed, first make sure you have node installed (as described above), then run:
 ``` javascript 
 npm install npm
 ```
@@ -28,7 +29,7 @@ Installation instructions can be found here: https://docs.mongodb.com/manual/ins
 
 # Project setup
 
-1. To clone the project and install dependencies, open a terminal and navigate to the folder where you wish to save the project. Run the command:
+1. To clone the project and install dependencies, open a terminal and navigate to the folder where you wish to save the project. Run the following command:
 ``` javascript 
 git clone https://github.com/Gemmawv/northcoders-news-api
 ```
@@ -52,6 +53,7 @@ npm start
 ``` javascript 
 node seed/seed.js
 ```
+
 
 # API endpoints
 Once you have installed and set up the project, you may view the API endpoints in your browser on http://localhost:3001/. Below is a list of all available endpoints.
