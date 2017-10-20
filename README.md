@@ -2,6 +2,7 @@
 A RESTful API for Northcoders News, a news aggregation site.
 This API has been built using Node.js, Express.js, MongoDB and Mongoose.
 
+This repo contains all the back-end code for this project. The code for the front-end can be viewed here: https://github.com/Gemmawv/northcoders-news
 
 # Installation
 
@@ -52,8 +53,25 @@ npm start
 node seed/seed.js
 ```
 
+# API endpoints
+Once you have installed and set up the project, you may view the API endpoints in your browser on http://localhost:3001/. Below is a list of all available endpoints.
+
+| Route |   |
+| ------|---|
+| `GET /api/topics` | Get all the topics |
+| `GET /api/topics/:topic_id/articles` | Return all the articles for a certain topic |
+| `GET /api/articles` | Returns all the articles |
+| `GET /api/articles/:article_id` | Returns a specific article |
+| `GET /api/articles/:article_id/comments` | Get all the comments for a individual article |
+| `POST /api/articles/:article_id/comments` | Add a new comment to an article. This route requires a JSON body with a comment key and value pair e.g: {"comment": "This is my new comment"} |
+| `PUT /api/articles/:article_id` | Increment or Decrement the votes of an article by one. This route requires a vote query of 'up' or 'down' e.g: /api/articles/:article_id?vote=up |
+| `PUT /api/comments/:comment_id` | Increment or Decrement the votes of a comment by one. This route requires a vote query of 'up' or 'down' e.g: /api/comments/:comment_id?vote=down |
+| `DELETE /api/comments/:comment_id` | Deletes a comment |
+| `GET /api/users/:username` | Returns a JSON object with the profile data for the specified user. |
+
+
 # Running tests
-1. Open a terminal and run
+1. To run tests, open a terminal, navigate to the project folder and run:
 ``` javascript 
 npm test
 ```
