@@ -2,7 +2,10 @@
 A RESTful API for Northcoders News, a news aggregation site.
 This API has been built using Node.js, Express.js, MongoDB and Mongoose.
 
-This repo contains all the back-end code for this project. The code for the front-end can be viewed here: https://github.com/Gemmawv/northcoders-news
+You can view the API endpoints (listed below) here: https://nameless-sands-36123.herokuapp.com. For example, https://nameless-sands-36123.herokuapp.com/api/articles will return all of the articles.
+Alternatively, you can run this project locally by following the installation and setup instructions below.
+
+This repo contains all of the back-end code for this project. The code for the front-end can be viewed here: https://github.com/Gemmawv/northcoders-news
 
 
 # Installation
@@ -46,7 +49,7 @@ mongod
 
 4. Open another terminal, navigate to the project folder and run:
 ``` javascript 
-npm start
+npm run dev
 ```
 
 5. Open another terminal, navigate to the project folder and seed the database with the main seed file by running:
