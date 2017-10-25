@@ -1,9 +1,9 @@
 module.exports = [
-    {username: 'tickle122', name: 'Tom Tickle', avatar_url: 'http://www.spiritsurfers.net/monastery/wp-content/uploads/_41500270_mrtickle.jpg'},
-    {username: 'grumpy19', name: 'Paul Grump', avatar_url: 'http://www.tumbit.com/profile-image/4/original/mr-grumpy.jpg'},
-    {username: 'happyamy2016', name: 'Amy Happy', avatar_url: 'https://cdn.shopify.com/s/files/1/1429/5628/t/3/assets/characterpic-square-mr+happy.jpg'},
-    {username: 'cooljmessy', name: 'Peter Messy', avatar_url: 'https://cdn.shopify.com/s/files/1/1429/5628/t/3/assets/characterpic-square-mr+messy.jpg'},
-    {username: 'weegembump', name: 'Gemma Bump', avatar_url: 'https://cdn.shopify.com/s/files/1/1429/5628/t/3/assets/characterpic-square-mr+bump.jpg'},
-    {username: 'jessjelly', name: 'Jess Jelly', avatar_url: 'https://s-media-cache-ak0.pinimg.com/564x/39/62/ec/3962eca164e60cf46f979c1f57d4078b.jpg'}
-  ];
+  {username: 'tickle122', name: 'Tom Tickle', avatar_url: 'http://www.spiritsurfers.net/monastery/wp-content/uploads/_41500270_mrtickle.jpg'},
+  {username: 'grumpy19', name: 'Paul Grump', avatar_url: 'http://www.tumbit.com/profile-image/4/original/mr-grumpy.jpg'},
+  {username: 'happyamy2016', name: 'Amy Happy', avatar_url: 'https://cdn.shopify.com/s/files/1/1429/5628/t/3/assets/characterpic-square-mr+happy.jpg'},
+  {username: 'cooljmessy', name: 'Peter Messy', avatar_url: 'https://cdn.shopify.com/s/files/1/1429/5628/t/3/assets/characterpic-square-mr+messy.jpg'},
+  {username: 'weegembump', name: 'Gemma Bump', avatar_url: 'https://cdn.shopify.com/s/files/1/1429/5628/t/3/assets/characterpic-square-mr+bump.jpg'},
+  {username: 'jessjelly', name: 'Jess Jelly', avatar_url: 'https://s-media-cache-ak0.pinimg.com/564x/39/62/ec/3962eca164e60cf46f979c1f57d4078b.jpg'}
+];
   

@@ -5,7 +5,7 @@ const commentsRouter = require('./comments');
 const usersRouter = require('./users');
 
 router.get('/', function (req, res) {
-res.send('OK');
+  res.send('OK');
 });
 
 router.use('/topics', topicsRouter);

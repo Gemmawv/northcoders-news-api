@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const async = require('async');
 const models = require('../models/models');
 const testUsername = 'northcoder';
@@ -9,18 +10,18 @@ function saveUser(cb) {
     avatar_url: 'https://avatars3.githubusercontent.com/u/6791502?v=3&s=200'
   });
 
-    user.save((err) => {
-      if (err) cb(err);
-      else cb();
-    });
+  user.save((err) => {
+    if (err) cb(err);
+    else cb();
+  });
 }
 
 function saveTopics(cb) {
-const topics = [
-  new models.Topics({ title: 'Football', slug: 'football' }),
-  new models.Topics({ title: 'Cooking', slug: 'cooking' }),
-  new models.Topics({ title: 'Cats', slug: 'cats' })
-];
+  const topics = [
+    new models.Topics({ title: 'Football', slug: 'football' }),
+    new models.Topics({ title: 'Cooking', slug: 'cooking' }),
+    new models.Topics({ title: 'Cats', slug: 'cats' })
+  ];
 
   models.Topics.create(topics, (err) => {
     if (err) cb(err);
@@ -31,9 +32,9 @@ const topics = [
 function saveArticles(cb) {
 
   const articles = [
-  new models.Articles({ title: 'Cats are great', body: 'something', belongs_to: 'cats', created_by: 'northcoder'  }),
-  new models.Articles({ title: 'Football is fun', body: 'something', belongs_to: 'football', created_by: 'northcoder' })
-];
+    new models.Articles({ title: 'Cats are great', body: 'something', belongs_to: 'cats', created_by: 'northcoder'  }),
+    new models.Articles({ title: 'Football is fun', body: 'something', belongs_to: 'football', created_by: 'northcoder' })
+  ];
   
   models.Articles.create(articles, (err, docs) => {
     if (err) cb(err);
@@ -52,13 +53,13 @@ function saveComments(articlesArray, cb) {
 }
 
 function saveTestData(DB, cb) {
-    async.waterfall([saveUser, saveTopics, saveArticles, saveComments], (err, ids) => {
-      if (err) cb(err);
-      else {
-        console.log('Test data seeded successfully.');
-        cb(null, ids);
-      }
-    });
+  async.waterfall([saveUser, saveTopics, saveArticles, saveComments], (err, ids) => {
+    if (err) cb(err);
+    else {
+      console.log('Test data seeded successfully.');
+      cb(null, ids);
+    }
+  });
 }
 
 module.exports = saveTestData;

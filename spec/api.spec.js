@@ -3,21 +3,24 @@ const { expect } = require('chai');
 const request = require('supertest');
 const server = require('../server');
 const saveTestData = require('../seed/test.seed');
-const config = require('../config');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-const db = config.DB[process.env.NODE_ENV] || process.env.DB;
+const db = process.env.DB_URI;
 
 describe('API', function () {
   this.timeout(5000);
   let usefulIds;
-  beforeEach((done) => {
+  before((done) => {
     mongoose.connection.dropDatabase()
       .then(() => saveTestData(db, function (err, ids) {
         if (err) throw err;
         usefulIds = ids;
         done();
       }));
+  });
+
+  after(() => {
+    mongoose.disconnect();
   });
 
   describe('GET /', function () {
@@ -39,7 +42,7 @@ describe('API', function () {
       request(server)
         .get('/api/topics')
         .end((err, res) => {
-          if (err) return console.log(err);
+          if (err) throw err;
           expect(res.status).to.equal(200);
           expect(res.body.topics.length).to.equal(3);
           done();
@@ -52,7 +55,7 @@ describe('API', function () {
       request(server)
         .get('/api/topics/football/articles')
         .end((err, res) => {
-          if (err) return console.log(err);
+          if (err) throw err;
           expect(res.status).to.equal(200);
           expect(res.body.articlesByTopic.length).to.equal(1);
           done();
@@ -62,7 +65,7 @@ describe('API', function () {
       request(server)
         .get('/api/topics/coconuts/articles')
         .end((err, res) => {
-          if (err) return console.log(err);
+          if (err) throw err;
           expect(res.status).to.equal(404);
           expect(res.body.message).to.equal('Topic not found');
           done();
@@ -75,7 +78,7 @@ describe('API', function () {
       request(server)
         .get('/api/articles')
         .end((err, res) => {
-          if (err) return console.log(err);
+          if (err) throw err;
           expect(res.status).to.equal(200);
           expect(res.body.articles.length).to.equal(2);
           done();
@@ -89,7 +92,7 @@ describe('API', function () {
       request(server)
         .get(`/api/articles/${ArticleId}`)
         .end((err, res) => {
-          if (err) return console.log(err);
+          if (err) throw err;
           expect(res.status).to.equal(200);
           expect(res.body.article.title).to.equal('Cats are great');
           done();
@@ -99,7 +102,7 @@ describe('API', function () {
       request(server)
         .get('/api/articles/987cf12ab75d862c4fbffa07')
         .end((err, res) => {
-          if (err) return console.log(err);
+          if (err) throw err;
           expect(res.status).to.equal(404);
           expect(res.body.message).to.equal('Article not found');
           done();
@@ -109,7 +112,7 @@ describe('API', function () {
       request(server)
         .get('/api/articles/llama')
         .end((err, res) => {
-          if (err) return console.log(err);
+          if (err) throw err;
           expect(res.status).to.equal(422);
           expect(res.body.message).to.equal('Incorrect/Invalid ID');
           done();
@@ -123,7 +126,7 @@ describe('API', function () {
       request(server)
         .get(`/api/articles/${ArticleId}/comments`)
         .end((err, res) => {
-          if (err) return console.log(err);
+          if (err) throw err;
           expect(res.status).to.equal(200);
           expect(res.body.commentsForArticles.length).to.equal(2);
           done();
@@ -133,7 +136,7 @@ describe('API', function () {
       request(server)
         .get('/api/articles/zebra/comments')
         .end((err, res) => {
-          if (err) return console.log(err);
+          if (err) throw err;
           expect(res.status).to.equal(422);
           expect(res.body.message).to.equal('Incorrect/Invalid ID');
           done();
@@ -148,7 +151,7 @@ describe('API', function () {
         .post(`/api/articles/${ArticleId}/comments`)
         .send({ body: 'Comment!' })
         .end((err, res) => {
-          if (err) return console.log(err);
+          if (err) throw err;
           expect(res.status).to.equal(201);
           const commentId = res.body.comment._id;
           expect(mongoose.Types.ObjectId.isValid(commentId)).to.equal(true);
@@ -161,7 +164,7 @@ describe('API', function () {
         .post('/api/articles/594ce833a5c1100b7c3886d0/comments')
         .send({ body: 'Comment!' })
         .end((err, res) => {
-          if (err) return console.log(err);
+          if (err) throw err;
           expect(res.status).to.equal(404);
           expect(res.body.message).to.equal('Cannot find article 594ce833a5c1100b7c3886d0');
           done();
@@ -171,7 +174,7 @@ describe('API', function () {
       request(server)
         .post('/api/articles/banana/comments')
         .end((err, res) => {
-          if (err) return console.log(err);
+          if (err) throw err;
           expect(res.status).to.equal(422);
           expect(res.body.message).to.equal('Incorrect/Invalid ID');
           done();
@@ -185,7 +188,7 @@ describe('API', function () {
       request(server)
         .put(`/api/articles/${articleId}?vote=up`)
         .end((err, res) => {
-          if (err) return console.log(err);
+          if (err) throw err;
           expect(res.status).to.equal(201);
           expect(res.body.article.votes).to.equal(1);
           done();
@@ -196,9 +199,10 @@ describe('API', function () {
       request(server)
         .put(`/api/articles/${articleId}?vote=down`)
         .end((err, res) => {
-          if (err) return console.log(err);
+          if (err) throw err;
           expect(res.status).to.equal(201);
-          expect(res.body.article.votes).to.equal(-1);
+          // Previous test changed votes to be 1 so if we downvote, votes should now be 0.
+          expect(res.body.article.votes).to.equal(0);
           done();
         });
     });
@@ -207,7 +211,7 @@ describe('API', function () {
       request(server)
         .put(`/api/articles/${articleId}?vote=up`)
         .end((err, res) => {
-          if (err) return console.log(err);
+          if (err) throw err;
           expect(res.status).to.equal(404);
           expect(res.body.message).to.equal('Cannot find article 594ce833a5c1100b7c3886d0');
           done();
@@ -218,7 +222,7 @@ describe('API', function () {
       request(server)
         .put(`/api/articles/${articleId}?vote=down`)
         .end((err, res) => {
-          if (err) return console.log(err);
+          if (err) throw err;
           expect(res.status).to.equal(422);
           expect(res.body.message).to.equal('Incorrect/Invalid ID');
           done();
@@ -232,7 +236,7 @@ describe('API', function () {
       request(server)
         .put(`/api/comments/${commentId}?vote=up`)
         .end((err, res) => {
-          if (err) return console.log(err);
+          if (err) throw err;
           expect(res.status).to.equal(201);
           expect(res.body.comment.votes).to.equal(1);
           done();
@@ -243,9 +247,10 @@ describe('API', function () {
       request(server)
         .put(`/api/comments/${commentId}?vote=down`)
         .end((err, res) => {
-          if (err) return console.log(err);
+          if (err) throw err;
           expect(res.status).to.equal(201);
-          expect(res.body.comment.votes).to.equal(-1);
+          // Previous test changed votes to be 1 so if we downvote, votes should now be 0.
+          expect(res.body.comment.votes).to.equal(0);
           done();
         });
     });
@@ -254,7 +259,7 @@ describe('API', function () {
       request(server)
         .put(`/api/comments/${commentId}?vote=up`)
         .end((err, res) => {
-          if (err) return console.log(err);
+          if (err) throw err;
           expect(res.status).to.equal(404);
           expect(res.body.message).to.equal('Cannot find comment 11b5a7fdb2017d0dfa0e80e3');
           done();
@@ -265,7 +270,7 @@ describe('API', function () {
       request(server)
         .put(`/api/comments/${commentId}?vote=down`)
         .end((err, res) => {
-          if (err) return console.log(err);
+          if (err) throw err;
           expect(res.status).to.equal(422);
           expect(res.body.message).to.equal('Incorrect/Invalid ID');
           done();
@@ -279,7 +284,7 @@ describe('API', function () {
       request(server)
         .delete(`/api/comments/${commentId}`)
         .end((err, res) => {
-          if (err) return console.log(err);
+          if (err) throw err;
           expect(res.status).to.equal(200);
           expect(res.body.message).to.equal('Comment has been deleted.');
           done();
@@ -290,7 +295,7 @@ describe('API', function () {
       request(server)
         .delete(`/api/comments/${commentId}`)
         .end((err, res) => {
-          if (err) return console.log(err);
+          if (err) throw err;
           expect(res.status).to.equal(404);
           expect(res.body.message).to.equal('Cannot find comment 11b5a7fdb2017d0dfa0e80e3');
           done();
@@ -301,7 +306,7 @@ describe('API', function () {
       request(server)
         .delete(`/api/comments/${commentId}`)
         .end((err, res) => {
-          if (err) return console.log(err);
+          if (err) throw err;
           expect(res.status).to.equal(422);
           expect(res.body.message).to.equal('Incorrect/Invalid ID');
           done();
@@ -315,7 +320,7 @@ describe('API', function () {
       request(server)
         .get(`/api/users/${singleUser}`)
         .end((err, res) => {
-          if (err) return console.log(err);
+          if (err) throw err;
           expect(res.status).to.equal(200);
           expect(res.body.user.length).to.equal(1);
           done();
@@ -326,7 +331,7 @@ describe('API', function () {
       request(server)
         .get(`/api/users/${singleUser}`)
         .end((err, res) => {
-          if (err) return console.log(err);
+          if (err) throw err;
           expect(res.status).to.equal(404);
           expect(res.body.message).to.equal('User not found');
           done();

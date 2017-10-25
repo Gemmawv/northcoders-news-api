@@ -2,10 +2,13 @@
   "name": "northcoders-news-api",
   "version": "1.0.0",
   "description": "",
-  "main": "config.js",
+  "main": "server.js",
   "scripts": {
     "test": "NODE_ENV=test mocha ./spec",
-    "start": "nodemon server.js",
+    "start": "NODE_ENV=production node start.js",
+    "dev": "NODE_ENV=dev nodemon start.js",
+    "seed:dev": "NODE_ENV=dev node seed/seed.js",
+    "seed:production": "NODE_ENV=production node seed/seed.js",
     "lint": "eslint ./",
     "posttest": "npm run lint",
     "precommit": "npm test"
@@ -14,19 +17,22 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "async": "^2.5.0",
     "chai": "^4.1.2",
+    "chance": "^1.0.11",
+    "dotenv": "^4.0.0",
+    "eslint": "^4.9.0",
     "husky": "^0.14.3",
-    "supertest": "^3.0.0"
+    "log4js": "^2.3.3",
+    "mocha": "^4.0.1",
+    "moment": "^2.18.1",
+    "supertest": "^3.0.0",
+    "underscore": "^1.8.3"
   },
   "dependencies": {
-    "async": "^2.5.0",
     "body-parser": "^1.18.0",
-    "chance": "^1.0.11",
     "cors": "^2.8.4",
     "express": "^4.15.4",
-    "log4js": "^2.3.3",
-    "moment": "^2.18.1",
-    "mongoose": "^4.11.10",
-    "underscore": "^1.8.3"
+    "mongoose": "^4.11.10"
   }
 }

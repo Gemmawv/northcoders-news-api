@@ -1,3 +1,9 @@
+/* eslint-disable no-console */
+if (!process.env.NODE_ENV) process.env.NODE_ENV = 'dev';
+require('dotenv').config({
+  path: `./.${process.env.NODE_ENV}.env`
+});
+
 const models = require('../models/models');
 const userData = require('./data/user_data.js');
 const articleData = require('./data/articles');
@@ -9,11 +15,10 @@ const mongoose = require('mongoose');
 const log4js = require('log4js');
 const logger = log4js.getLogger();
 const moment = require('moment');
-const DBs = require('../config').DB;
 
-mongoose.connect(DBs.dev, { useMongoClient: true }, function (err) {
+mongoose.connect(process.env.DB_URI, { useMongoClient: true }, function (err) {
   if (!err) {
-    logger.info(`connected to database ${DBs.dev}`);
+    logger.info(`connected to database ${process.env.DB_URI}`);
     mongoose.connection.db.dropDatabase();
     async.waterfall([
       addUsers,
@@ -143,7 +148,7 @@ function addComments(docIds, done) {
   async.eachSeries(docIds, function (id, cb) {
     async.eachSeries(_.range(_.sample(_.range(5, 11))), function (x, cbTwo) {
       const comment = {
-        body: chance.paragraph({sentences: _.sample(_.range(2, 5))}),
+        body: chance.paragraph({ sentences: _.sample(_.range(2, 5)) }),
         belongs_to: id,
         created_by: userData[_.sample(_.range(6))].username,
         votes: _.sample(_.range(2, 11)),
@@ -168,10 +173,10 @@ function addComments(docIds, done) {
 }
 
 function getRandomStamp() {
-  return new Date (
-    moment().subtract(_.sample(_.range(1,7)), 'days')
-    .subtract(_.sample(_.range(1,24)), 'hours')
-    .subtract(_.sample(_.range(1,60)), 'minutes')
-    .format()
+  return new Date(
+    moment().subtract(_.sample(_.range(1, 7)), 'days')
+      .subtract(_.sample(_.range(1, 24)), 'hours')
+      .subtract(_.sample(_.range(1, 60)), 'minutes')
+      .format()
   ).getTime();
 }
