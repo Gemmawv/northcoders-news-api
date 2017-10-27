@@ -59,7 +59,7 @@ node seed/seed.js
 
 
 # API endpoints
-Once you have installed and set up the project, you may view the API endpoints in your browser on http://localhost:3001/. Below is a list of all available endpoints.
+Once you have installed and set up the project, you may view the API endpoints in your browser on http://localhost:4000. For example, http://localhost:4000/api/articles will return all of the articles. Below is a list of all available endpoints.
 
 | Route |   |
 | ------|---|
