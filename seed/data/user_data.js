@@ -1,6 +1,6 @@
 module.exports = [
-  {username: 'tickle122', name: 'Tom Tickle', avatar_url: 'http://www.spiritsurfers.net/monastery/wp-content/uploads/_41500270_mrtickle.jpg'},
-  {username: 'grumpy19', name: 'Paul Grump', avatar_url: 'http://www.tumbit.com/profile-image/4/original/mr-grumpy.jpg'},
+  {username: 'tickle122', name: 'Tom Tickle', avatar_url: 'https://vignette.wikia.nocookie.net/mrmen/images/b/bb/Mr._Tickle_.jpg/revision/latest?'},
+  {username: 'grumpy19', name: 'Paul Grump', avatar_url: 'https://vignette.wikia.nocookie.net/mrmen/images/7/7d/Mr._Grumpy.PNG/revision/latest/scale-to-width-down/161?'},
   {username: 'happyamy2016', name: 'Amy Happy', avatar_url: 'https://cdn.shopify.com/s/files/1/1429/5628/t/3/assets/characterpic-square-mr+happy.jpg'},
   {username: 'cooljmessy', name: 'Peter Messy', avatar_url: 'https://cdn.shopify.com/s/files/1/1429/5628/t/3/assets/characterpic-square-mr+messy.jpg'},
   {username: 'weegembump', name: 'Gemma Bump', avatar_url: 'https://cdn.shopify.com/s/files/1/1429/5628/t/3/assets/characterpic-square-mr+bump.jpg'},
