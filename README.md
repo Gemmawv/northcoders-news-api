@@ -54,7 +54,7 @@ npm run dev
 
 5. Open another terminal, navigate to the project folder and seed the database with the main seed file by running:
 ``` javascript 
-node seed/seed.js
+npm run seed:dev
 ```
 
 
